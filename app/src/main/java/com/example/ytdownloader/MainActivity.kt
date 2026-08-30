@@ -111,7 +111,7 @@ fun BottomNavBar(navController: NavHostController) {
         NavigationBarItem(
             selected = currentRoute == "downloads",
             onClick = { navController.navigate("downloads") },
-            icon = { Icon(Icons.Default.Download, contentDescription = "Downloads") },
+            icon = { Icon(Icons.Default.GetApp, contentDescription = "Downloads") },
             label = { Text("Downloads") }
         )
         NavigationBarItem(
@@ -254,7 +254,7 @@ fun DetailScreen(viewModel: DownloadViewModel, navController: NavHostController)
                                         style = MaterialTheme.typography.bodySmall
                                     )
                                 }
-                                Icon(Icons.Default.Download, contentDescription = "Download")
+                                Icon(Icons.Default.GetApp, contentDescription = "Download")
                             }
                         }
                     }
@@ -356,8 +356,8 @@ fun MoreScreen() {
     val menuItems = listOf(
         "Terminal" to Icons.Default.Terminal,
         "Logs" to Icons.Default.Description,
-        "Download queue" to Icons.Default.Download,
-        "Cookies" to Icons.Default.Cookie,
+        "Download queue" to Icons.Default.GetApp,
+        "Cookies" to Icons.Default.Settings,
         "Settings" to Icons.Default.Settings
     )
 

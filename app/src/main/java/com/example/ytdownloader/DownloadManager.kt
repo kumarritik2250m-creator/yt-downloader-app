@@ -44,7 +44,7 @@ class DownloadManager {
                     FormatOption(
                         formatId = f.formatId ?: "",
                         container = (f.ext ?: "mp4").uppercase(),
-                        resolutionLabel = f.resolution ?: f.formatNote ?: "unknown",
+                        resolutionLabel = f.formatNote ?: f.formatNote ?: "unknown",
                         codec = f.vcodec ?: "",
                         fileSizeLabel = formatBytes(f.fileSize),
                         isAudioOnly = false
@@ -68,7 +68,7 @@ class DownloadManager {
             Result.success(
                 VideoInfo(
                     title = info.title ?: "video",
-                    author = info.uploader ?: info.channel ?: "",
+                    author = info.uploader ?: "" ?: "",
                     duration = info.duration.toLong(),
                     thumbnailUrl = info.thumbnail,
                     videoFormats = videoFormats,
