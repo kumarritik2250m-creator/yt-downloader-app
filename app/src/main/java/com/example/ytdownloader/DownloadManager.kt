@@ -1,5 +1,6 @@
 package com.example.ytdownloader
 
+import android.content.Context
 import android.os.Environment
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
@@ -14,7 +15,7 @@ import java.io.File
  * (app ke andar nahi) — isliye phone gallery/file-manager me bhi dikhengi
  * aur app uninstall hone par bhi safe rahengi.
  */
-class DownloadManager {
+class DownloadManager(private val appContext: Context) {
 
     private val videoDir: File by lazy {
         File(
@@ -33,6 +34,7 @@ class DownloadManager {
     /** URL se video ka title, author, thumbnail aur saari available qualities fetch karta hai */
     suspend fun fetchVideoInfo(url: String): Result<VideoInfo> = withContext(Dispatchers.IO) {
         try {
+            YoutubeDLInitializer.ensureInitialized(appContext)
             val request = YoutubeDLRequest(url)
             val info: YTVideoInfo = YoutubeDL.getInstance().getInfo(request)
 
@@ -44,7 +46,7 @@ class DownloadManager {
                     FormatOption(
                         formatId = f.formatId ?: "",
                         container = (f.ext ?: "mp4").uppercase(),
-                        resolutionLabel = f.formatNote ?: f.formatNote ?: "unknown",
+                        resolutionLabel = f.resolution ?: f.formatNote ?: "unknown",
                         codec = f.vcodec ?: "",
                         fileSizeLabel = formatBytes(f.fileSize),
                         isAudioOnly = false
@@ -68,7 +70,7 @@ class DownloadManager {
             Result.success(
                 VideoInfo(
                     title = info.title ?: "video",
-                    author = info.uploader ?: "" ?: "",
+                    author = info.uploader ?: info.channel ?: "",
                     duration = info.duration.toLong(),
                     thumbnailUrl = info.thumbnail,
                     videoFormats = videoFormats,
@@ -92,6 +94,7 @@ class DownloadManager {
         onProgress: (progress: Float, etaSeconds: Long) -> Unit
     ): Result<String> = withContext(Dispatchers.IO) {
         try {
+            YoutubeDLInitializer.ensureInitialized(appContext)
             val targetDir = if (audioOnly) audioDir else videoDir
 
             val request = YoutubeDLRequest(url).apply {

@@ -11,7 +11,7 @@ import java.io.File
 
 class DownloadViewModel(app: Application) : AndroidViewModel(app) {
 
-    private val downloadManager = DownloadManager()
+    private val downloadManager = DownloadManager(app.applicationContext)
     private val storage = AppStorage(app)
 
     private val _state = MutableStateFlow<DownloadState>(DownloadState.Idle)
